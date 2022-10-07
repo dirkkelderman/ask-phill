@@ -1,11 +1,30 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import ProductCard from "../components/ProductCard";
 import Layout from "../layouts/Layout";
-import styles from "../styles/Home.module.css";
+import CategoryFilter from "../components/Filters/CategoryFilter";
+import Page from "../components/Page";
+import Header from "../layouts/Header";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
+  const getQueryUrl = () => {
+    const { query } = router;
+    let page = Number(query.page) >= 1 ? Number(query.page) : 1;
+    let limit = Number(query.limit) >= 10 ? Number(query.limit) : 10;
+    let search = query.search || "";
+
+    return {
+      router,
+      page,
+      limit,
+      search,
+    };
+  };
+
+  const { page, limit, search } = getQueryUrl();
+
   return (
     <div>
       <Head>
@@ -16,8 +35,16 @@ const Home: NextPage = () => {
       <Layout>
         <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-          <ProductCard
+        <Header />
+
+        <section>
+          <Page page={page} limit={limit} search={search} />
+          {/* <ProductList productData={data} /> */}
+          {/* {data.map((product) => (
+            <ProductCard product={product} />
+          ))} */}
+
+          {/* <ProductCard
             name={"Product 1"}
             price={0}
             colorFamily={{
@@ -41,57 +68,7 @@ const Home: NextPage = () => {
                 ],
               },
             }}
-          />
-          <ProductCard
-            name={"Product 2"}
-            price={0}
-            colorFamily={{
-              name: "red",
-            }}
-            thumbnailImage={{
-              file: {
-                alt: "alt",
-                url: "",
-              },
-            }}
-            categoryTags={[]}
-            shopifyProductEu={{
-              variants: {
-                edges: [
-                  {
-                    node: {
-                      price: 0,
-                    },
-                  },
-                ],
-              },
-            }}
-          />
-          <ProductCard
-            name={"Product 3"}
-            price={0}
-            colorFamily={{
-              name: "red",
-            }}
-            thumbnailImage={{
-              file: {
-                alt: "alt",
-                url: "",
-              },
-            }}
-            categoryTags={[]}
-            shopifyProductEu={{
-              variants: {
-                edges: [
-                  {
-                    node: {
-                      price: 0,
-                    },
-                  },
-                ],
-              },
-            }}
-          />
+          /> */}
         </section>
       </Layout>
     </div>
