@@ -7,14 +7,14 @@ import {
 } from "../components/Filters";
 
 const Filters = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [colors, setColors] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [pricing, setPricing] = useState([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
+  const [colors, setColors] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [pricing, setPricing] = useState<string[]>([]);
   const router = useRouter();
 
-  const { query, pathname } = router;
+  const { query } = router;
 
   useEffect(() => {
     if (query.page) {
@@ -28,17 +28,17 @@ const Filters = () => {
     }
 
     if (query.color) {
-      const colorArray : string[] = query.color.split(",");
+      const colorArray = (query.color as string).split(",");
       setColors(colorArray);
     }
 
     if (query.category) {
-      const categoryArray = query.category.split(",");
+      const categoryArray = (query.category as string).split(",");
       setCategories(categoryArray);
     }
 
     if (query.price) {
-      const priceArray = query.price.split("-");
+      const priceArray = (query.price as string ).split("-");
       setPricing(priceArray);
     }
   }, [query.page, query.limit, query.color, query.category, query.price]);
@@ -62,9 +62,7 @@ const Filters = () => {
   };
 
   const handlePriceFilter = (selectedPrice: any) => {
-    const selectedPriceArray = selectedPrice.map(
-      (price: any) => price.name
-    );
+    const selectedPriceArray = selectedPrice.map((price: any) => price.name);
 
     router.replace(
       `/?page=${currentPage}&limit=${limit}&color=${colors}&category=${categories}&price=${selectedPriceArray}`

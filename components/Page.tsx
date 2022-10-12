@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React from "react";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -25,7 +24,13 @@ const Page = ({ page, limit, offset }: PageProps) => {
   const { data, error } = useSWR([`${url}`], fetcher);
 
   const filterProducts = data?.data?.filter((product: any) => {
-    return product?.colorFamily === null || product?.categoryTags === null || product?.colorFamily[0].name.includes(colors) && product?.categoryTags[0]?.includes(categories) && parseInt(product.price) <= price
+    return (
+      product?.colorFamily === null ||
+      product?.categoryTags === null ||
+      (product?.colorFamily[0].name.includes(colors) &&
+        product?.categoryTags[0]?.includes(categories) &&
+        parseInt(product.price) <= price)
+    );
   });
 
   useEffect(() => {
