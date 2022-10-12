@@ -26,12 +26,14 @@ const Page = ({ page, limit, offset }: PageProps) => {
   const filterProducts = data?.data?.filter((product: any) => {
     return (
       product?.colorFamily === null ||
-      product?.categoryTags === null ||
+      // product?.categoryTags === null ||
       (product?.colorFamily[0].name.includes(colors) &&
         product?.categoryTags[0]?.includes(categories) &&
-        parseInt(product.price) <= price)
+        parseInt(product.price) >= price)
     );
   });
+
+  console.log(filterProducts);
 
   useEffect(() => {
     setFilteredProducts(filterProducts);
