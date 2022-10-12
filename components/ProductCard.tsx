@@ -10,7 +10,6 @@ const ProductCard = ({
   price,
   thumbnailImage,
 }: ProductCardProps) => {
-
   return (
     <div className=" bg-slate-300 rounded-2xl w-96 shadow-xl">
       <div className="flex flex-col font-sans  ">

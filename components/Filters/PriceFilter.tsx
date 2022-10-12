@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Multiselect from "multiselect-react-dropdown";
+import { PriceProps } from "../../interfaces/price";
 
 const priceData = [
   { name: "25" },
@@ -9,13 +10,7 @@ const priceData = [
   { name: "1000" },
 ];
 
-interface PriceProps {
-  priceChange: (price: string[]) => void;
-}
-
-
-const PriceFilter = ({ priceChange } : PriceProps) => {
-
+const PriceFilter = ({ priceChange }: PriceProps) => {
   const onSelect = (
     selectedList: string[] | ((prevState: never[]) => never[])
   ) => {
@@ -38,7 +33,6 @@ const PriceFilter = ({ priceChange } : PriceProps) => {
         onRemove={onRemove}
         displayValue="name"
       />
-
     </div>
   );
 };

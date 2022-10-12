@@ -1,10 +1,7 @@
 import useGetAllProductColors from "../../lib/useGetAllProductColors";
 import Multiselect from "multiselect-react-dropdown";
 import React from "react";
-
-interface ColorProps {
-  colorChange: (colors: string[]) => void;
-}
+import { ColorProps } from "../../interfaces/colors";
 
 const ColorFilter = ({ colorChange }: ColorProps) => {
   const { allColors } = useGetAllProductColors();
