@@ -25,22 +25,8 @@ const Page = ({ page, limit, offset }: PageProps) => {
   const { data, error } = useSWR([`${url}`], fetcher);
 
   const filterProducts = data?.data?.filter((product: any) => {
-    if (product.colorFamily === null) {
-      return;
-    } else if (product.colorFamily[0].name.includes(colors)) {
-      return product;
-    }
+    return product?.colorFamily === null || product?.categoryTags === null || product?.colorFamily[0].name.includes(colors) && product?.categoryTags[0]?.includes(categories) && parseInt(product.price) <= price
   });
-
-  const filterProductsByCategory = data?.data?.filter((product: any) => {
-    if (product.categoryTags === null) {
-      return;
-    } else if (product?.categoryTags[0]?.includes(categories)) {
-      return product;
-    }
-  });
-
-  console.log(filterProductsByCategory);
 
   useEffect(() => {
     setFilteredProducts(filterProducts);

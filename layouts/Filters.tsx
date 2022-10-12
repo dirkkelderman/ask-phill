@@ -11,7 +11,7 @@ const Filters = () => {
   const [limit, setLimit] = useState(10);
   const [colors, setColors] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [pricing, setPricing] = useState([0, 1000]);
+  const [pricing, setPricing] = useState([]);
   const router = useRouter();
 
   const { query, pathname } = router;
@@ -28,7 +28,7 @@ const Filters = () => {
     }
 
     if (query.color) {
-      const colorArray = query.color.split(",");
+      const colorArray : string[] = query.color.split(",");
       setColors(colorArray);
     }
 
@@ -61,9 +61,13 @@ const Filters = () => {
     );
   };
 
-  const handlePriceFilter = (price: any) => {
+  const handlePriceFilter = (selectedPrice: any) => {
+    const selectedPriceArray = selectedPrice.map(
+      (price: any) => price.name
+    );
+
     router.replace(
-      `/?page=${currentPage}&limit=${limit}&color=${colors}&category=${categories}&price=${price}`
+      `/?page=${currentPage}&limit=${limit}&color=${colors}&category=${categories}&price=${selectedPriceArray}`
     );
   };
 
