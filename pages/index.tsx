@@ -1,29 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Layout from "../layouts/Layout";
-import CategoryFilter from "../components/Filters/CategoryFilter";
 import Page from "../components/Page";
 import Header from "../layouts/Header";
-import { useRouter } from "next/router";
+import useGetQueryUrl from "../lib/useGetQueryUrl";
 
 const Home: NextPage = () => {
-  const router = useRouter();
-
-  const getQueryUrl = () => {
-    const { query } = router;
-    let page = Number(query.page) >= 1 ? Number(query.page) : 1;
-    let limit = Number(query.limit) >= 10 ? Number(query.limit) : 10;
-    let search = query.search || "";
-
-    return {
-      router,
-      page,
-      limit,
-      search,
-    };
-  };
-
-  const { page, limit, search } = getQueryUrl();
+  const { page, limit, offset } = useGetQueryUrl();
 
   return (
     <div>
@@ -33,42 +16,29 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-
         <Header />
-
         <section>
-          <Page page={page} limit={limit} search={search} />
-          {/* <ProductList productData={data} /> */}
-          {/* {data.map((product) => (
-            <ProductCard product={product} />
-          ))} */}
+          <div style={{ display: "none" }}>
+            <Page
+              page={page - 1}
+              limit={limit}
+              offset={offset}
+            />
+          </div>
 
-          {/* <ProductCard
-            name={"Product 1"}
-            price={0}
-            colorFamily={{
-              name: "red",
-            }}
-            thumbnailImage={{
-              file: {
-                alt: "alt",
-                url: "",
-              },
-            }}
-            categoryTags={[]}
-            shopifyProductEu={{
-              variants: {
-                edges: [
-                  {
-                    node: {
-                      price: 0,
-                    },
-                  },
-                ],
-              },
-            }}
-          /> */}
+          <Page
+            page={page}
+            limit={limit}
+            offset={offset}
+          />
+
+          <div style={{ display: "none" }}>
+            <Page
+              page={page + 1}
+              limit={limit}
+              offset={offset}
+            />
+          </div>
         </section>
       </Layout>
     </div>

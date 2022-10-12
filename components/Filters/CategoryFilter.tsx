@@ -1,71 +1,46 @@
-import { useEffect, useState } from "react";
+import useGetAllProductCategories from "../../lib/useGetAllProductCategories";
+import Multiselect from "multiselect-react-dropdown";
+import { Category, CategoryProps } from "../../interfaces/category";
+import React from "react";
 
-interface Category {
-  id: number;
-  name: string;
-}
+const CategoryFilter = ({ categoryChange }: CategoryProps) => {
+  const { allCategories } = useGetAllProductCategories();
 
-interface CategoryFilterProps {
-  categories: Category[];
-  selectedCategories: number[];
-  onCategoryChange: (categories: number[]) => void;
-}
-
-const CategoryFilter = ({ categories }: CategoryFilterProps) => {
-  // const [categories, setCategories] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
-  // useEffect(() => {
-  //     const fetchCategories = async () => {
-  //     const response = await fetch('/api/categories');
-  //     const categories = await response.json();
-  //     setCategories(categories);
-  //     };
-
-  //     fetchCategories();
-  // }, []);
-
-  const handleCategoryChange = (e: { target: { value: any } }) => {
-    // const valueArray = [];
-    const { value } = e.target;
-
-    // valueArray.push(...selectedCategories, value);
-
-    setSelectedCategories(value);
-
-    // const value = Array.from(e.target.value, (option) => option.value);
-    // setSelectedCategories(value);
-    console.log(selectedCategories);
+  const onSelect = (
+    selectedList: string[] | ((prevState: never[]) => never[])
+  ) => {
+    categoryChange(selectedList as string[]);
   };
+
+  const onRemove = (
+    selectedList: string[] | ((prevState: never[]) => never[])
+  ) => {
+    categoryChange(selectedList as string[]);
+  };
+  const categoryOptions = allCategories?.data?.map((category: Category) => {
+    if (category === null) {
+      return {
+        name: "New Arrivals",
+      };
+    } else {
+      return {
+        name: category,
+      };
+    }
+  });
 
   return (
     <div>
-      <label htmlFor="categories">Categories</label>
-      <select
-        id="categories"
-        name="categories"
-        value={selectedCategories}
-        onChange={handleCategoryChange}
-      >
-        {/* {categories.map((category) => (
-          <option key={category.id} value={category.id}>
-            {category.name}
-          </option>
-        ))} */}
-        <option value="all">All</option>
-        <option value="none">None</option>
-        <option value="nike">Nike</option>
-      </select>
-      <label>
-        <input type="checkbox" checked={selectedCategories} onChange={handleCategoryChange} />
-        Nike
-      </label>
-      <label>
-        <input type="checkbox" checked={selectedCategories} onChange={handleCategoryChange} />
-        Adidas
-      </label>
+      <h1>Category filters</h1>
+
+      <Multiselect
+        options={categoryOptions}
+        onSelect={onSelect}
+        onRemove={onRemove}
+        displayValue="name"
+      />
     </div>
   );
 };
 
-export default CategoryFilter;
+export default React.memo(CategoryFilter);
